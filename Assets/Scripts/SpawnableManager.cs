@@ -19,10 +19,10 @@ public class SpawnableManager : MonoBehaviour
     private Vector3 initialScaleAtPinch;
     private float initialDistanceBetweenFingers;
 
-    private Vector2 initialTouchPosition;  // For detecting touch drag
-    private float rotationSpeed = 0.2f;    // Adjust rotation sensitivity
+    private Vector2 initialTouchPosition; 
+    private float rotationSpeed = 0.2f;    
 
-    // UI Buttons for color change
+    
     public Button roseButton;
     public Button lavenderButton;
     public Button pinkButton;
@@ -31,7 +31,7 @@ public class SpawnableManager : MonoBehaviour
     {
         spawnedObject = null;
 
-        // Set up button listeners
+        
         roseButton.onClick.AddListener(ChangeToRose);
         lavenderButton.onClick.AddListener(ChangeToLavender);
         pinkButton.onClick.AddListener(ChangeToPink);
@@ -39,7 +39,7 @@ public class SpawnableManager : MonoBehaviour
 
     void Update()
     {
-        // Check for touch input
+        
         if (Input.touchCount > 0)
         {
             HandleTouchInput();
@@ -60,7 +60,7 @@ public class SpawnableManager : MonoBehaviour
                     if (hit.collider.gameObject.tag == "Spawnable")
                     {
                         spawnedObject = hit.collider.gameObject;
-                        initialTouchPosition = Input.GetTouch(0).position;  // Record touch position when interacting with object
+                        initialTouchPosition = Input.GetTouch(0).position;  
                     }
                     else if (spawnedObject == null)
                     {
@@ -74,7 +74,7 @@ public class SpawnableManager : MonoBehaviour
                 HandlePinchToScale();
             }
 
-            // Handle object rotation when dragging
+            
             if (spawnedObject != null && Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
                 HandleTouchRotation();
@@ -105,40 +105,40 @@ public class SpawnableManager : MonoBehaviour
         Vector2 currentTouchPosition = Input.GetTouch(0).position;
         Vector2 touchDelta = currentTouchPosition - initialTouchPosition;
 
-        float rotationX = touchDelta.y * rotationSpeed; // Rotate along the x-axis (vertical drag)
-        float rotationY = -touchDelta.x * rotationSpeed; // Rotate along the y-axis (horizontal drag)
+        float rotationX = touchDelta.y * rotationSpeed; 
+        float rotationY = -touchDelta.x * rotationSpeed; 
 
         spawnedObject.transform.Rotate(rotationX, rotationY, 0, Space.World);
 
-        initialTouchPosition = currentTouchPosition; // Update the last touch position
+        initialTouchPosition = currentTouchPosition; 
     }
 
     private void SpawnPrefab(Vector3 spawnPosition)
     {
-        // Set the y-coordinate to 0.6f while keeping the x and z the same
+        
         spawnPosition.y = 0.6f;
 
-        // Instantiate the prefab at the modified position
+        
         spawnedObject = Instantiate(spawnablePrefab, spawnPosition, Quaternion.identity);
 
-        // Store the original scale
+        
         originalScale = spawnedObject.transform.localScale;
     }
 
-    // Methods to change the color of the spawned object
+
     private void ChangeToRose()
     {
-        ChangeCubeColor(new Color(1.0f, 0.5f, 0.5f)); // Rose color
+        ChangeCubeColor(new Color(1.0f, 0.5f, 0.5f)); 
     }
 
     private void ChangeToLavender()
     {
-        ChangeCubeColor(new Color(0.8f, 0.6f, 0.9f)); // Lavender color
+        ChangeCubeColor(new Color(0.8f, 0.6f, 0.9f)); 
     }
 
     private void ChangeToPink()
     {
-        ChangeCubeColor(new Color(1.0f, 0.75f, 0.8f)); // Pink color
+        ChangeCubeColor(new Color(1.0f, 0.75f, 0.8f)); 
     }
 
     private void ChangeCubeColor(Color color)
@@ -148,16 +148,16 @@ public class SpawnableManager : MonoBehaviour
             Renderer renderer = spawnedObject.GetComponent<Renderer>();
             if (renderer != null)
             {
-                renderer.material.color = color; // Apply color to the spawned object
+                renderer.material.color = color; 
             }
             else
             {
-                Debug.LogWarning("No Renderer found on the spawned object.");
+                Debug.Log("No Renderer found on the spawned object.");
             }
         }
         else
         {
-            Debug.LogWarning("No spawned object to change color.");
+            Debug.Log("No spawned object to change color.");
         }
     }
 }
